@@ -1,0 +1,33 @@
+name: Data Cleaning Project
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+
+jobs:
+  clean-data:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Get repository files
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install libraries
+        run: pip install -r requirements.txt
+
+      - name: Run data cleaning
+        run: python cleaning_script.py
+
+      - name: Save cleaned files
+        uses: actions/upload-artifact@v4
+        with:
+          name: cleaned-data-files
+          path: |
+            cleaned_dataset.csv
+            cleaning_report.txt
